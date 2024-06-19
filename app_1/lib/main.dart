@@ -11,13 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Clac',
       theme: ThemeData(
         // This is the theme of your application.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Calc'),
     );
   }
 }
@@ -35,6 +35,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  void _call(String val) {
+    print(val);
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -57,29 +60,247 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            SizedBox(
+              width: 400,
+              height: 40,
+              child: TextField(
+                onChanged: _call,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white),
+              ),
             ),
             Text(
-              '$_counter',
+              'Result : $_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  onPressed: _decrementCounter,
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.remove),
-                )
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                        onPressed: _incrementCounter,
+                        tooltip: 'Increment',
+                        child: const Text(
+                          '7',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '8',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '9',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '÷',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ))
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                        onPressed: _incrementCounter,
+                        tooltip: 'Increment',
+                        child: const Text(
+                          '4',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '5',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '6',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        'x',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                        onPressed: _incrementCounter,
+                        tooltip: 'Increment',
+                        child: const Text(
+                          '1',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '2',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '3',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '-',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                        onPressed: _incrementCounter,
+                        tooltip: 'Increment',
+                        child: const Text(
+                          '0',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '.',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '=',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: _decrementCounter,
+                      tooltip: 'Decrement',
+                      child: const Text(
+                        '+',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ))
+              ],
+            )
           ],
         ),
       ),
