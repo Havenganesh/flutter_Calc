@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expressions/expressions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +12,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Clac',
+      debugShowCheckedModeBanner: false,
+      title: 'Claculator',
       theme: ThemeData(
         // This is the theme of your application.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 180, 233)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Calc'),
+      home: const MyHomePage(title: 'Claculator'),
     );
   }
 }
@@ -34,48 +37,81 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  void _call(String val) {
-    print(val);
-  }
+  final TextEditingController _controller = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  bool _symbol = false;
+  bool _dotted = false;
+  void _parsing() {
+    if (_controller.text.isNotEmpty) {
+      String expression = _controller.text;
+      expression = expression.replaceAll('x', '*');
+      expression = expression.replaceAll('÷', '/');
 
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
+      Expression? exp = Expression.tryParse(expression);
+      ExpressionEvaluator evaluator = const ExpressionEvaluator();
+      if (exp != null) {
+        dynamic val = evaluator.eval(exp, {});
+        _controller.text = val.toString();
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
+      appBar: null,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              width: 400,
+              width: 260,
               height: 40,
               child: TextField(
-                onChanged: _call,
+                enabled: false,
+                controller: _controller,
+                textAlign: TextAlign.right,
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Colors.white),
               ),
             ),
-            Text(
-              'Result : $_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: SizedBox(
+                      width: 188,
+                      child: FloatingActionButton(
+                          onPressed: () {
+                            _dotted = false;
+                            _controller.text = '';
+                          },
+                          tooltip: 'Reset',
+                          child: const Text(
+                            'Reset',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        if (_controller.text.isNotEmpty) {
+                          _controller.text = _controller.text
+                              .substring(0, _controller.text.length - 1);
+                        }
+                      },
+                      tooltip: 'delete',
+                      child: const Icon(Icons.delete),
+                    )),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -83,8 +119,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                        onPressed: _incrementCounter,
-                        tooltip: 'Increment',
+                        onPressed: () {
+                          if (_symbol) {
+                            _dotted = false;
+                          }
+                          _symbol = false;
+                          _controller.text += '7';
+                        },
+                        tooltip: '7',
                         child: const Text(
                           '7',
                           style: TextStyle(
@@ -95,8 +137,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '8';
+                      },
+                      tooltip: '8',
                       child: const Text(
                         '8',
                         style: TextStyle(
@@ -108,8 +156,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '9';
+                      },
+                      tooltip: '9',
                       child: const Text(
                         '9',
                         style: TextStyle(
@@ -121,8 +175,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (!_symbol) {
+                          if (_controller.text.isNotEmpty) {
+                            String lastLetter = _controller.text
+                                .substring(_controller.text.length - 1);
+                            if (lastLetter != ".") {
+                              _symbol = true;
+                              _controller.text += '÷';
+                            }
+                          }
+                        }
+                      },
+                      tooltip: '÷',
                       child: const Text(
                         '÷',
                         style: TextStyle(
@@ -139,8 +204,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                        onPressed: _incrementCounter,
-                        tooltip: 'Increment',
+                        onPressed: () {
+                          if (_symbol) {
+                            _dotted = false;
+                          }
+                          _symbol = false;
+                          _controller.text += '4';
+                        },
+                        tooltip: '4',
                         child: const Text(
                           '4',
                           style: TextStyle(
@@ -151,8 +222,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '5';
+                      },
+                      tooltip: '5',
                       child: const Text(
                         '5',
                         style: TextStyle(
@@ -164,8 +241,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '6';
+                      },
+                      tooltip: '6',
                       child: const Text(
                         '6',
                         style: TextStyle(
@@ -177,8 +260,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (!_symbol) {
+                          if (_controller.text.isNotEmpty) {
+                            String lastLetter = _controller.text
+                                .substring(_controller.text.length - 1);
+                            if (lastLetter != ".") {
+                              _symbol = true;
+                              _controller.text += 'x';
+                            }
+                          }
+                        }
+                      },
+                      tooltip: 'x',
                       child: const Text(
                         'x',
                         style: TextStyle(
@@ -195,8 +289,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                        onPressed: _incrementCounter,
-                        tooltip: 'Increment',
+                        onPressed: () {
+                          if (_symbol) {
+                            _dotted = false;
+                          }
+                          _symbol = false;
+                          _controller.text += '1';
+                        },
+                        tooltip: '1',
                         child: const Text(
                           '1',
                           style: TextStyle(
@@ -207,8 +307,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '2';
+                      },
+                      tooltip: '2',
                       child: const Text(
                         '2',
                         style: TextStyle(
@@ -220,8 +326,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (_symbol) {
+                          _dotted = false;
+                        }
+                        _symbol = false;
+                        _controller.text += '3';
+                      },
+                      tooltip: '3',
                       child: const Text(
                         '3',
                         style: TextStyle(
@@ -233,8 +345,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (!_symbol) {
+                          if (_controller.text.isNotEmpty) {
+                            String lastLetter = _controller.text
+                                .substring(_controller.text.length - 1);
+                            if (lastLetter != ".") {
+                              _symbol = true;
+                              _controller.text += '-';
+                            }
+                          }
+                        }
+                      },
+                      tooltip: '-',
                       child: const Text(
                         '-',
                         style: TextStyle(
@@ -251,8 +374,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                        onPressed: _incrementCounter,
-                        tooltip: 'Increment',
+                        onPressed: () {
+                          if (_symbol) {
+                            _dotted = false;
+                          }
+                          _symbol = false;
+                          _controller.text += '0';
+                        },
+                        tooltip: '0',
                         child: const Text(
                           '0',
                           style: TextStyle(
@@ -263,8 +392,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (!_dotted) {
+                          if (!_symbol) {
+                            if (_controller.text.isNotEmpty) {
+                              _dotted = true;
+                              _controller.text += '.';
+                            }
+                          }
+                        }
+                      },
+                      tooltip: '.',
                       child: const Text(
                         '.',
                         style: TextStyle(
@@ -276,8 +414,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: _parsing,
+                      tooltip: '=',
                       child: const Text(
                         '=',
                         style: TextStyle(
@@ -289,8 +427,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: FloatingActionButton(
-                      onPressed: _decrementCounter,
-                      tooltip: 'Decrement',
+                      onPressed: () {
+                        if (!_symbol) {
+                          if (_controller.text.isNotEmpty) {
+                            String lastLetter = _controller.text
+                                .substring(_controller.text.length - 1);
+                            if (lastLetter != ".") {
+                              _symbol = true;
+                              _controller.text += '+';
+                            }
+                          }
+                        }
+                      },
+                      tooltip: '+',
                       child: const Text(
                         '+',
                         style: TextStyle(
